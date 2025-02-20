@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - Zoo Arcadia</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <style>
+    body {
+      background-color: #1f2937;
+      color: white;
+    }
+    .header-banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to right, #2d6a4f, #40916c);
+      color: white;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      padding: 15px 0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      border-bottom: 6px solid #52b788;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="bg-green-800 flex items-center justify-center min-h-screen relative">
+
+  <div class="header-banner">
+    Zoo Arcadia
+  </div>
+
+  <!-- Navigation -->
+<nav class="absolute top-0 right-0 p-6 z-50">
+    <ul class="flex space-x-4">
+        <li class="relative group">
+            <a href="{{ path('app_home') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Accueil</a>
+            <ul class="absolute left-0 mt-1 w-40 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-opacity duration-300 pointer-events-none">
+                <li><a href="{{ path('app_zones') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Nos zones</a></li>
+                <li><a href="{{ path('app_services_veterinaire') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Services vétérinaires</a></li>
+                <li><a href="{{ path('app_services') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Services du zoo</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ path('app_login') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Connexion</a></li>
+        <li><a href="{{ path('admin_dashboard') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Admin</a></li>
+        <li><a href="{{ path('app_contact') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Avis et Contact</a></li>
+    </ul>
+</nav>
+
+  <div class="bg-white text-black p-8 rounded-lg shadow-lg w-full max-w-md mt-20">
+    <h2 class="text-2xl font-bold mb-6 text-center">Connexion</h2>
+
+    {% if error %}
+      <p class="text-red-500 text-center mb-4">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+    {% endif %}
+
+    <form method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" name="_username" id="username" required class="border-2 p-2 w-full mb-4">
+
+        <label for="password">Mot de passe :</label>
+        <input type="password" name="_password" id="password" required class="border-2 p-2 w-full mb-4">
+
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+          Se connecter
+        </button>
+    </form>
+  </div>
+
+</body>
+</html>

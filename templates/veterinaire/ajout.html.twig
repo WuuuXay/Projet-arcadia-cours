@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <title>Ajouter un Animal</title>
+</head>
+<body class="bg-green-800 text-white">
+
+<!--  Titre -->
+<div class="text-center mt-24">
+    <h1 class="text-4xl font-bold">Ajouter un Animal</h1>
+</div>
+
+<!--  Formulaire d'ajout -->
+<div class="container mx-auto px-6 mt-8">
+    {{ form_start(form, {'attr': {'class': 'bg-white p-6 rounded-lg shadow-lg text-black'}}) }}
+        {{ form_row(form.nom, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
+        {{ form_row(form.race, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
+        {{ form_row(form.etat, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
+        {{ form_row(form.enclos, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
+        <button type="submit" class="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700">
+            Ajouter
+        </button>
+    {{ form_end(form) }}
+</div>
+
+<!--  Lien de retour -->
+<div class="text-center mt-4">
+    <a href="{{ path('veterinaire_dashboard_index') }}" class="text-gray-300 hover:text-white">
+        Retour au tableau de bord
+    </a>
+</div>
+
+</body>
+</html>

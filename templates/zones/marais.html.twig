@@ -1,0 +1,133 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <style>
+        /* Animation d'apparition de la modale */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-green-800">
+
+<!-- Navigation -->
+<nav class="absolute top-0 right-0 p-6 z-50">
+    <ul class="flex space-x-4">
+        <li class="relative group">
+            <a href="{{ path('app_home') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Accueil</a>
+            <ul class="absolute left-0 mt-1 w-40 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-opacity duration-300 pointer-events-none">
+                <li><a href="{{ path('app_zones') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Nos zones</a></li>
+                <li><a href="{{ path('app_services_veterinaire') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Services vétérinaires</a></li>
+                <li><a href="{{ path('app_services') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Services du zoo</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ path('app_login') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Connexion</a></li>
+        <li><a href="{{ path('admin_dashboard') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Admin</a></li>
+        <li><a href="{{ path('app_contact') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Avis et Contact</a></li>
+
+    </ul>
+</nav>
+
+<!-- Section des enclos -->
+<div class="container mx-auto py-24 text-center">
+    <h1 class="text-4xl font-bold mb-12 text-white">Nos enclos du marais</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Enclos 1 -->
+        <div class="bg-green-600 p-6 rounded-lg shadow-lg cursor-pointer" onclick="openModal('tortue')">
+            <img src="https://images.pexels.com/photos/1334142/pexels-photo-1334142.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="tortue" class="w-full h-48 object-cover rounded-lg">
+            <h2 class="text-2xl font-bold mt-4 text-white">Les eaux calmes</h2>
+        </div>
+
+        <!-- Enclos 2 -->
+        <div class="bg-yellow-600 p-6 rounded-lg shadow-lg cursor-pointer" onclick="openModal('anaconda')">
+            <img src="https://images.pexels.com/photos/1360123/pexels-photo-1360123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="anaconda" class="w-full h-48 object-cover rounded-lg">
+            <h2 class="text-2xl font-bold mt-4 text-white">Les rives sauvages</h2>
+        </div>
+
+        <!-- Enclos 3 -->
+        <div class="bg-green-700 p-6 rounded-lg shadow-lg cursor-pointer" onclick="openModal('varan')">
+            <img src="https://images.pexels.com/photos/68076/pexels-photo-68076.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="varan" class="w-full h-48 object-cover rounded-lg">
+            <h2 class="text-2xl font-bold mt-4 text-white">Le delta brumeux</h2>
+        </div>
+    </div>
+</div>
+
+<!-- Modale des animaux -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center hidden">
+    <div class="bg-white text-black p-8 rounded-lg w-3/4 max-w-3xl modal-enter">
+        <h2 class="text-3xl font-bold mb-6 text-center" id="modal-title"></h2>
+        <div id="modal-content" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <button onclick="closeModal()" class="mt-6 w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Fermer</button>
+    </div>
+</div>
+
+<script>
+    const enclos = {
+        tortue: [
+            { nom: "Nasus", image: "https://images.pexels.com/photos/769433/pexels-photo-769433.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", sante: "Bonne", alimentation: "Poissons, oiseaux, mammifères, reptiles", race: "Alligator mississippiensis" },
+            { nom: "Voli", image: "https://images.pexels.com/photos/28319570/pexels-photo-28319570.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", sante: "Excellente", alimentation: "Poissons, amphibiens, invertébrés", race: "Macrochelys temminckii" }
+        ],
+        anaconda: [
+            { nom: "Kata", image: "https://images.pexels.com/photos/4063745/pexels-photo-4063745.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", sante: "Bonne", alimentation: "Mammifères, oiseaux, poissons, reptiles", race: "Eunectes murinus" },
+            { nom: "Anivia", image: "https://images.pexels.com/photos/3660658/pexels-photo-3660658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", sante: "Très Bonne", alimentation: "Poissons, amphibiens, insectes aquatiques", race: "Agamia agami" }
+        ],
+        varan: [
+            { nom: "Varus", image: "https://www.instinct-animal.fr/wp-content/uploads/2019/11/varan-du-nil-1.jpg", sante: "Bonne", alimentation: "Poissons, crustacés, œufs, petits mammifères", race: "Varanus niloticus" },
+            { nom: "Yuumi", image: "https://images.pexels.com/photos/55754/otter-animals-fur-wet-55754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", sante: "Bonne", alimentation: "Poissons, crustacés, mollusques", race: "Lutrogale perspicillata" },
+        ]
+    };
+
+    function openModal(zone) {
+        document.getElementById('modal').classList.remove('hidden');
+        document.querySelector('.modal-enter').classList.add('modal-enter-active');
+        document.getElementById('modal-title').innerText = "Animaux de l'enclos des " + zone.charAt(0).toUpperCase() + zone.slice(1);
+
+        let content = "";
+        enclos[zone].forEach(animal => {
+            content += `
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                    <img src="${animal.image}" alt="${animal.nom}" class="w-full h-40 object-cover rounded-lg">
+                    <h3 class="text-xl font-bold mt-4">${animal.nom}</h3>
+                    <p><strong>Santé:</strong> ${animal.sante}</p>
+                    <p><strong>Alimentation:</strong> ${animal.alimentation}</p>
+                    <p><strong>Race:</strong> ${animal.race}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById('modal-content').innerHTML = content;
+    }
+
+    function closeModal() {
+        document.querySelector('.modal-enter').classList.remove('modal-enter-active');
+        setTimeout(() => {
+            document.getElementById('modal').classList.add('hidden');
+        }, 300);
+    }
+</script>
+
+<div class="container mx-auto py-18 text-center">
+<h1 class="text-4xl font-bold mb-12 text-white">Les autres enclos du zoo</h1>
+
+<!-- Zone : Jungle -->
+            <a href="{{ path('app_jungle') }}" class="block bg-green-900 p-8 rounded-lg shadow-lg text-center hover:bg-green-800 transition duration-300">
+                <h2 class="text-3xl font-bold mb-4">🌴 La Jungle</h2>
+                <p class="text-lg">Partez à l'aventure dans la jungle luxuriante.</p>
+            </a>
+
+<!-- Zone : Savane -->
+            <a href="{{ path('app_savane') }}" class="block bg-yellow-700 p-8 rounded-lg shadow-lg text-center hover:bg-yellow-600 transition duration-300">
+                <h2 class="text-3xl font-bold mb-4">🦁 La Savane</h2>
+                <p class="text-lg">Découvrez les majestueux animaux de la savane.</p>
+            </a>
+
+</body>
+</html>

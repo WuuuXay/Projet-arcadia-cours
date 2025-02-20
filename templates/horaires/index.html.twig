@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Horaires{% endblock %}
+
+{% block body %}
+    <h1>Nos horaires</h1>
+    <ul>
+        {% for horaire in horaires %}
+    <p>
+        {{ horaire.jour }} :
+        {% if horaire.heureOuverture is not null and horaire.heureFermeture is not null %}
+            {{ horaire.heureOuverture|date('H:i') }} - {{ horaire.heureFermeture|date('H:i') }}
+        {% else %}
+            Fermé
+        {% endif %}
+    </p>
+{% endfor %}
+    </ul>
+{% endblock %}
