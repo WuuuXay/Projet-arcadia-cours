@@ -1,8 +1,0 @@
-<h1 class="text-4xl font-bold mb-12 text-white">Nos Zones</h1>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    {% for zone in zones %}
-        <a href="{{ path('app_zone', { id: zone.id }) }}" class="block bg-green-900 p-8 rounded-lg shadow-lg text-center hover:bg-green-800 transition duration-300">
-            <h2 class="text-3xl font-bold mb-4">{{ zone.nom }}</h2>
-        </a>
-    {% endfor %}
-</div>
