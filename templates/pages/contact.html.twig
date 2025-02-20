@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <title>Contact & Avis - Zoo Arcadia</title>
+</head>
+<body class="bg-green-800 text-white">
+
+<!-- Navigation -->
+<nav class="absolute top-0 right-0 p-6 z-50 w-full bg-green-900">
+    <div class="flex justify-between items-center">
+        <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+            ☰
+        </button>
+        <ul id="menu" class="hidden md:flex space-x-4 text-center w-full justify-center">
+            <li><a href="{{ path('app_home') }}" class="nav-link">Accueil</a></li>
+            <li><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
+            <li><a href="{{ path('admin_dashboard') }}" class="nav-link">Admin</a></li>
+            <li><a href="{{ path('app_contact') }}" class="nav-link">Avis et Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- En-tête -->
+<div class="text-center py-16">
+    <h1 class="text-5xl font-bold">Contact & Avis</h1>
+    <p class="text-lg mt-4">Partagez votre avis ou contactez-nous pour toute question.</p>
+</div>
+
+<!-- SECTION AVIS -->
+<h2 class="text-3xl font-bold text-center mb-6">Laissez votre avis</h2>
+
+{% if form is defined %}
+    {{ form_start(form) }}
+        {{ form_row(form.pseudo) }}
+        {{ form_row(form.contenu) }}
+        <button type="submit" class="btn btn-primary mt-4">Envoyer</button>
+    {{ form_end(form) }}
+{% else %}
+    <p class="text-red-500 text-center">Formulaire indisponible.</p>
+{% endif %}
+
+
+<!-- Afficher les avis existants -->
+<h2 class="text-3xl font-bold text-center mt-10 mb-6">Avis des utilisateurs</h2>
+{% if avisList is defined and avisList is not empty %}
+    <ul class="max-w-lg mx-auto space-y-3 mt-6">
+        {% for avis in avisList %}
+            <li class="bg-gray-100 text-black p-3 rounded-md shadow">
+                <strong>{{ avis.pseudo }} :</strong> {{ avis.contenu }}
+                <em class="block text-sm text-gray-600">{{ avis.createdAt|date('d/m/Y H:i') }}</em>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-center text-gray-400">Aucun avis pour le moment.</p>
+{% endif %}
+
+<!-- Affichage des messages flash -->
+{% for message in app.flashes('success') %}
+    <div class="mt-4 p-4 bg-green-500 text-white text-center rounded-md">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<!-- Section Formulaire de Contact -->
+<section class="container mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold text-center mb-6">Nous Contacter</h2>
+    <form action="mailto:zoo.arcadia@example.com" method="POST" enctype="text/plain" class="bg-white text-black p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+        <label class="block mb-2 font-semibold">Nom :</label>
+        <input type="text" name="nom" class="w-full p-2 border rounded-md focus:ring-green-500 focus:border-green-500" required>
+
+        <label class="block mt-4 mb-2 font-semibold">E-mail :</label>
+        <input type="email" name="email" class="w-full p-2 border rounded-md focus:ring-green-500 focus:border-green-500" required>
+
+        <label class="block mt-4 mb-2 font-semibold">Message :</label>
+        <textarea name="message" class="w-full p-2 border rounded-md focus:ring-green-500 focus:border-green-500" rows="4" required></textarea>
+
+        <button type="submit" class="mt-4 w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition">Envoyer</button>
+    </form>
+</section>
+
+<script>
+    document.getElementById('reviewForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let pseudo = document.getElementById('pseudo').value;
+        let avis = document.getElementById('avis').value;
+
+        if (pseudo && avis) {
+            let avisList = document.getElementById('avisList');
+            let li = document.createElement('li');
+            li.classList.add("bg-gray-100", "text-black", "p-3", "rounded-md", "shadow");
+            li.innerHTML = `<strong>${pseudo} :</strong> ${avis}`;
+            avisList.appendChild(li);
+
+            // Stocker en local (localStorage)
+            let storedAvis = JSON.parse(localStorage.getItem('avis')) || [];
+            storedAvis.push({ pseudo, avis });
+            localStorage.setItem('avis', JSON.stringify(storedAvis));
+
+            // Réinitialiser le formulaire
+            document.getElementById('reviewForm').reset();
+        }
+    });
+
+    // Charger les avis stockés
+    window.onload = function () {
+        let storedAvis = JSON.parse(localStorage.getItem('avis')) || [];
+        let avisList = document.getElementById('avisList');
+        storedAvis.forEach(entry => {
+            let li = document.createElement('li');
+            li.classList.add("bg-gray-100", "text-black", "p-3", "rounded-md", "shadow");
+            li.innerHTML = `<strong>${entry.pseudo} :</strong> ${entry.avis}`;
+            avisList.appendChild(li);
+        });
+    };
+</script>
+
+<!-- Script pour le menu mobile -->
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        let menu = document.getElementById('menu');
+        menu.classList.toggle('hidden');
+        menu.classList.toggle('flex');
+        menu.classList.toggle('flex-col');
+    });
+</script>
+
+</body>
+</html>
