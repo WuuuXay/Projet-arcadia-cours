@@ -1,0 +1,19 @@
+parameters:
+
+services:
+    # Default configuration for services
+    _defaults:
+        autowire: true      # Injecte automatiquement les dépendances
+        autoconfigure: true # Active la configuration automatique
+        
+    App\Controller\Admin\StatistiquesController:
+        arguments:
+            $animalRepository: '@App\Repository\AnimalRepository'
+
+    # Déclare tous les services automatiquement
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'

@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+    <style type="text/tailwindcss">
+      @layer base {
+        :root {
+          --background: 120 20% 20%;
+          --foreground: 240 10% 3.9%;
+        }
+        .dark {
+          --background: 240 10% 3.9%;
+          --foreground: 0 0% 98%;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-green-800">
+
+<!-- Navigation -->
+<nav class="absolute top-0 right-0 p-6 z-50">
+    <ul class="flex space-x-4">
+        <li class="relative group">
+            <a href="{{ path('app_home') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Accueil</a>
+            <ul class="absolute left-0 mt-1 w-40 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-opacity duration-300 pointer-events-none">
+                <li><a href="{{ path('app_zones') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Nos zones</a></li>
+                <li><a href="{{ path('app_services_veterinaire') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Services vétérinaires</a></li>
+                <li><a href="{{ path('app_services') }}" class="block px-4 py-2 text-black bg-gray-100 hover:bg-green-200 transition duration-300 rounded-md text-center">Services du zoo</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ path('app_login') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Connexion</a></li>
+        <li><a href="{{ path('admin_dashboard') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Admin</a></li>
+        <li><a href="{{ path('app_contact') }}" class="bg-white text-black px-4 py-2 rounded-lg border-2 border-transparent hover:border-green-700 hover:bg-gray-200 hover:text-green-700 transition duration-300">Avis et Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Section Haut avec Vidéo de fond -->
+<div class="relative bg-gradient-to-b from-green-600 to-green-700 text-white">
+    <div class="absolute inset-0 flex items-center justify-center">
+        <video autoplay muted loop class="object-cover w-full h-[35vh] opacity-80">
+            <source src="https://cdn.pixabay.com/video/2022/12/22/143857-784164172_large.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center py-24 text-center p-6">
+        <h1 class="text-6xl font-extrabold drop-shadow-lg">Arcadia Zoo</h1>
+        <p class="mt-4 text-xl font-medium">Les services du zoo</p>
+    </div>
+</div>
+
+<section class="py-32 bg-green-800 text-white">
+    <div class="container mx-auto px-6 space-y-32">
+        <!-- Visites Guidées -->
+        <div class="flex flex-col md:flex-row items-center gap-16">
+            <img src="https://cdn.pixabay.com/photo/2017/08/29/04/40/tannheim-2692124_1280.jpg" alt="Service 1" class="w-full md:w-1/2 rounded-lg shadow-lg">
+            <div class="md:w-1/2 text-center md:text-left">
+                <h2 class="text-3xl font-bold mb-6">Visites Guidées</h2>
+                <p class="text-lg">Explorez le zoo avec un guide expérimenté. Empreuntez le petit train pour vous amusez à parcourir le zoo en toute tranquillité ou bien empruntez les itinéraires piétons afin de suivre votre propre route. Des guides peuvent vous accompagnez sans frais supplémentaire.</p>
+            </div>
+        </div>
+
+<section class="py-32 bg-green-800 text-white">
+    <div class="container mx-auto px-6 space-y-32">
+        {% for service in services %}
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                {% if loop.index is odd %}
+                    <img src="{{ service.image }}" alt="{{ service.nom }}" class="w-full md:w-1/2 rounded-lg shadow-lg">
+                    <div class="md:w-1/2 text-center md:text-left">
+                {% else %}
+                    <div class="md:w-1/2 text-center md:text-right">
+                {% endif %}
+                        <h2 class="text-3xl font-bold mb-6">{{ service.nom }}</h2>
+                        <p class="text-lg">{{ service.description }}</p>
+                    </div>
+                {% if loop.index is even %}
+                    <img src="{{ service.image }}" alt="{{ service.nom }}" class="w-full md:w-1/2 rounded-lg shadow-lg">
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+  </body>
+</html>

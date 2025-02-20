@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Ajouter un compte rendu pour {{ animal.nom }}</h1>
+
+    <div class="card shadow p-4">
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="mb-3">
+{{ form_label(form.contenu, 'Compte rendu', {'label_attr': {'class': 'form-label'}}) }}
+{{ form_widget(form.contenu, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+{{ form_errors(form.contenu) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
